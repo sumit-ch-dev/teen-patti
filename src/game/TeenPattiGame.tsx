@@ -81,7 +81,7 @@ export default function TeenPattiGame() {
     setPlayers(dealCards(newDeck));
   };
 
-  const Card = ({ suit, value }) => (
+  const Card = ({ suit, value }: Card) => (
     <div className="w-12 h-16 bg-white rounded-lg flex items-center justify-center border-2 border-black text-black font-bold">
       {value} {suit}
     </div>
