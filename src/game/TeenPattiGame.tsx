@@ -1,8 +1,36 @@
 import { useState } from "react";
 
+// declare types for suits and values
+type Suit = "♠" | "♥" | "♦" | "♣";
+type Value =
+  | "A"
+  | "2"
+  | "3"
+  | "4"
+  | "5"
+  | "6"
+  | "7"
+  | "8"
+  | "9"
+  | "10"
+  | "J"
+  | "Q"
+  | "K";
+
+// declare card type
+type Card = {
+  suit: Suit;
+  value: Value;
+};
+
+// declare deck type
+
+type Deck = Card[];
+
 export default function TeenPattiGame() {
-  const suits = ["♠", "♥", "♦", "♣"];
-  const values = [
+  // Declare Suits and Values
+  const suits: Suit[] = ["♠", "♥", "♦", "♣"];
+  const values: Value[] = [
     "A",
     "2",
     "3",
@@ -20,9 +48,9 @@ export default function TeenPattiGame() {
 
   // Generate Deck
   const generateDeck = () => {
-    let deck = [];
-    for (let suit of suits) {
-      for (let value of values) {
+    const deck: Deck = [];
+    for (const suit of suits) {
+      for (const value of values) {
         deck.push({ suit, value });
       }
     }
@@ -30,22 +58,28 @@ export default function TeenPattiGame() {
   };
 
   // Shuffle Deck
-  const shuffleDeck = (deck) => {
-    let shuffled = [...deck];
+  const shuffleDeck = (deck: Deck) => {
+    const shuffled = [...deck];
     for (let i = shuffled.length - 1; i > 0; i--) {
-      let j = Math.floor(Math.random() * (i + 1));
+      const j = Math.floor(Math.random() * (i + 1));
       [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
     }
     return shuffled;
   };
 
   // Distribute Cards
-  const dealCards = (shuffledDeck) => {
+  const dealCards = (shuffledDeck: Deck) => {
     return [shuffledDeck.slice(0, 3), shuffledDeck.slice(3, 6)];
   };
 
   const [deck, setDeck] = useState(shuffleDeck(generateDeck()));
   const [players, setPlayers] = useState(dealCards(deck));
+
+  const shuffleAndDeal = () => {
+    const newDeck = shuffleDeck(generateDeck());
+    setDeck(newDeck);
+    setPlayers(dealCards(newDeck));
+  };
 
   const Card = ({ suit, value }) => (
     <div className="w-12 h-16 bg-white rounded-lg flex items-center justify-center border-2 border-black text-black font-bold">
@@ -89,6 +123,14 @@ export default function TeenPattiGame() {
           </div>
         </div>
       </div>
+
+      {/* Shuffle & Deal Button */}
+      <button
+        onClick={shuffleAndDeal}
+        className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600"
+      >
+        Shuffle & Deal
+      </button>
     </div>
   );
 }
